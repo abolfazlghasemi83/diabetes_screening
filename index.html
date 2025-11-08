@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دکترِ رُباتیک — غربالگری هوشمند دیابت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f9fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --danger: #e53e3e;
+            --success: #38a169;
+            --border: #e2e8f0;
+            --shadow: 0 6px 16px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --shadow: 0 6px 16px rgba(0,0,0,0.2);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            padding: 20px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.6;
+        }
+
+        .logo-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--primary), #7209b7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+        }
+
+        .info-note {
+            background: rgba(74, 107, 255, 0.06);
+            border-right: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            margin-bottom: 26px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        [data-theme="dark"] .info-note {
+            background: rgba(94, 96, 206, 0.12);
+        }
+        html[dir="ltr"] .info-note {
+            border-right: none;
+            border-left: 4px solid var(--primary);
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.02rem;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1.05rem;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: -0.5px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .result-box {
+            padding: 28px;
+            border-radius: 18px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: none;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .result-0 {
+            background: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .result-1 {
+            background: rgba(229, 62, 62, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .rule-info {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: var(--text-light);
+            padding: 16px;
+            background: rgba(67, 97, 238, 0.07);
+            border-radius: 12px;
+            border-right: 4px solid var(--primary);
+        }
+        html[dir="ltr"] .rule-info {
+            border-right: none;
+            border-left: 4px solid var(--primary);
+        }
+
+        .theme-toggle, .lang-toggle {
+            position: fixed;
+            top: 24px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            transform: rotate(20deg);
+        }
+
+        .theme-toggle {
+            left: 24px;
+        }
+
+        .lang-toggle {
+            right: 24px;
+        }
+
+        html[dir="ltr"] .theme-toggle {
+            left: auto;
+            right: 88px;
+        }
+        html[dir="ltr"] .lang-toggle {
+            right: auto;
+            left: 24px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 22px 20px; }
+            .logo-header h1 { font-size: 2.0rem; }
+            .btn { padding: 16px; font-size: 1.1rem; }
+            .theme-toggle, .lang-toggle { width: 48px; height: 48px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+    </div>
+
+    <div class="lang-toggle" id="langToggle" aria-label="تغییر زبان / Switch language">
+        🇬🇧 English
+    </div>
+
+    <div class="container">
+        <header class="logo-header">
+            <h1 id="title">دکترِ رُباتیک 🤖🩺</h1>
+            <p class="subtitle" id="subtitle">غربالگری هوشمند دیابت — مبتنی بر قواعد پزشکی استاندارد</p>
+        </header>
+
+        <div class="info-note" id="infoNote">
+            ℹ️ این ابزار یک <strong>غربالگری اولیه</strong> است — نه تشخیص پزشکی.  
+            نتایج، کمکی برای تصمیم‌گیری دربارهٔ مراجعه به متخصص هستند.
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <label for="glucose" id="glucoseLabel">گلوکز (Glucose) — معمولاً بین 50 تا 200 mg/dL</label>
+                <input type="number" id="glucose" placeholder="مثال: 120" min="0" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="bmi" id="bmiLabel">شاخص توده بدنی (BMI) — معمولاً بین 15 تا 60</label>
+                <input type="number" id="bmi" placeholder="مثال: 32.0" min="0" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="bp" id="bpLabel">فشار خون (BloodPressure) — معمولاً بین 20 تا 120 mm Hg</label>
+                <input type="number" id="bp" placeholder="مثال: 72" min="0" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="age" id="ageLabel">سن (Age)</label>
+                <input type="number" id="age" placeholder="مثال: 45" min="0" max="120">
+            </div>
+            <div class="form-group">
+                <label for="dpf" id="dpfLabel">تابع سابقه دیابت (DiabetesPedigreeFunction) — معمولاً بین 0.08 تا 2.4</label>
+                <input type="number" id="dpf" placeholder="مثال: 0.5" min="0" step="0.001">
+            </div>
+
+            <button class="btn" id="predictBtn">🔍 غربالگری دیابت!</button>
+        </div>
+
+        <div id="resultBox" class="result-box"></div>
+    </div>
+
+    <footer id="footer">
+        طراحی شده با ❤️ توسط <strong>ابوالفضل قاسمی</strong> — مبتنی بر قواعد بالینی ساده‌ شده
+    </footer>
+
+    <script>
+    const translations = {
+        fa: {
+            title: "دکترِ رُباتیک 🤖🩺",
+            subtitle: "غربالگری هوشمند دیابت — مبتنی بر قواعد پزشکی استاندارد",
+            infoNote: "ℹ️ این ابزار یک <strong>غربالگری اولیه</strong> است — نه تشخیص پزشکی.<br>نتایج، کمکی برای تصمیم‌گیری دربارهٔ مراجعه به متخصص هستند.",
+            glucoseLabel: "گلوکز (Glucose) — معمولاً بین 50 تا 200 mg/dL",
+            bmiLabel: "شاخص توده بدنی (BMI) — معمولاً بین 15 تا 60",
+            bpLabel: "فشار خون (BloodPressure) — معمولاً بین 20 تا 120 mm Hg",
+            ageLabel: "سن (Age)",
+            dpfLabel: "تابع سابقه دیابت (DiabetesPedigreeFunction) — معمولاً بین 0.08 تا 2.4",
+            predictBtn: "🔍 غربالگری دیابت!",
+            alertInvalid: "⚠️ لطفاً تمامی فیلدها را به‌صورت عددی وارد کنید.",
+            langToggleText: "🇬🇧 English",
+            placeholders: {
+                glucose: "مثال: 120",
+                bmi: "مثال: 32.0",
+                bp: "مثال: 72",
+                age: "مثال: 45",
+                dpf: "مثال: 0.5"
+            },
+            resultYes: "احتمال دیابت: <strong>بله</strong>",
+            resultNo: "احتمال دیابت: <strong>خیر</strong>",
+            resultInfoYes: "این نتیجه جایگزین نظر پزشک نیست. برای بررسی دقیق، حتماً به متخصص غدد مراجعه کنید.",
+            resultInfoNo: "تبریک! اما سلامتی نیاز به پیشگیری دارد — چکاپ سالانه را فراموش نکنید.",
+            footer: "طراحی شده با ❤️ توسط <strong>ابوالفضل قاسمی</strong> — مبتنی بر قواعد بالینی ساده‌شده"
+        },
+        en: {
+            title: "Dr. Robotic 🤖🩺",
+            subtitle: "Smart Diabetes Screening — Based on Standard Clinical Rules",
+            infoNote: "ℹ️ This tool provides <strong>preliminary screening</strong> — not medical diagnosis.<br>Results help you decide whether to consult a specialist.",
+            glucoseLabel: "Glucose — typically 50–200 mg/dL",
+            bmiLabel: "Body Mass Index (BMI) — typically 15–60",
+            bpLabel: "Blood Pressure — typically 20–120 mm Hg",
+            ageLabel: "Age",
+            dpfLabel: "Diabetes Pedigree Function — typically 0.08–2.4",
+            predictBtn: "🔍 Screen for Diabetes!",
+            alertInvalid: "⚠️ Please fill all fields with valid numbers.",
+            langToggleText: "🇮🇷 فارسی",
+            placeholders: {
+                glucose: "e.g. 120",
+                bmi: "e.g. 32.0",
+                bp: "e.g. 72",
+                age: "e.g. 45",
+                dpf: "e.g. 0.5"
+            },
+            resultYes: "Diabetes Risk: <strong>Yes</strong>",
+            resultNo: "Diabetes Risk: <strong>No</strong>",
+            resultInfoYes: "This result is NOT a substitute for professional medical advice. Please consult an endocrinologist.",
+            resultInfoNo: "Congratulations! Still, prevention matters — don’t skip your annual check-up.",
+            footer: "Made with ❤️ by <strong>Abolfazl Ghasemi</strong> — rule-based clinical decision support"
+        }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'fa';
+    const langToggle = document.getElementById('langToggle');
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('lang', lang);
+        const t = translations[lang];
+
+       
+        document.getElementById('title').innerHTML = t.title;
+        document.getElementById('subtitle').textContent = t.subtitle;
+        document.getElementById('infoNote').innerHTML = t.infoNote;
+        document.getElementById('glucoseLabel').textContent = t.glucoseLabel;
+        document.getElementById('bmiLabel').textContent = t.bmiLabel;
+        document.getElementById('bpLabel').textContent = t.bpLabel;
+        document.getElementById('ageLabel').textContent = t.ageLabel;
+        document.getElementById('dpfLabel').textContent = t.dpfLabel;
+        document.getElementById('predictBtn').textContent = t.predictBtn;
+      
+        document.getElementById('footer').innerHTML = t.footer;
+        langToggle.innerHTML = t.langToggleText;
+
+        document.getElementById('glucose').placeholder = t.placeholders.glucose;
+        document.getElementById('bmi').placeholder = t.placeholders.bmi;
+        document.getElementById('bp').placeholder = t.placeholders.bp;
+        document.getElementById('age').placeholder = t.placeholders.age;
+        document.getElementById('dpf').placeholder = t.placeholders.dpf;
+
+        document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+        document.documentElement.lang = lang;
+
+        ['glucose', 'bmi', 'bp', 'age', 'dpf'].forEach(id => {
+            const val = localStorage.getItem(`input_${id}_${lang}`);
+            if (val) document.getElementById(id).value = val;
+        });
+    }
+
+    setLanguage(currentLang);
+
+    langToggle.addEventListener('click', () => {
+        ['glucose', 'bmi', 'bp', 'age', 'dpf'].forEach(id => {
+            const val = document.getElementById(id).value;
+            if (val) localStorage.setItem(`input_${id}_${currentLang}`, val);
+        });
+        const newLang = currentLang === 'fa' ? 'en' : 'fa';
+        setLanguage(newLang);
+    });
+
+    // --- Theme ---
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    function setTheme(theme) {
+        if (theme === 'dark') {
+            html.setAttribute('data-theme', 'dark');
+            themeIcon.textContent = '☀️';
+        } else {
+            html.removeAttribute('data-theme');
+            themeIcon.textContent = '🌙';
+        }
+        localStorage.setItem('theme', theme);
+        currentTheme = theme;
+    }
+
+    setTheme(currentTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+    });
+
+  
+    document.getElementById('predictBtn').addEventListener('click', () => {
+        const glucose = parseFloat(document.getElementById('glucose').value);
+        const bmi = parseFloat(document.getElementById('bmi').value);
+        const bp = parseFloat(document.getElementById('bp').value);
+        const age = parseFloat(document.getElementById('age').value);
+        const dpf = parseFloat(document.getElementById('dpf').value);
+
+        if ([glucose, bmi, bp, age, dpf].some(isNaN)) {
+            alert(translations[currentLang].alertInvalid);
+            return;
+        }
+
+        ['glucose', 'bmi', 'bp', 'age', 'dpf'].forEach(id => {
+            localStorage.setItem(`input_${id}_${currentLang}`, document.getElementById(id).value);
+        });
+
+        let pred = 0;
+        
+        let ruleDesc = currentLang === 'fa' 
+            ? 'پیش‌فرض سیستم: شرایط خاصی تشخیص داده نشد' 
+            : 'System default: No specific rule matched';
+
+        if (glucose > 100 && glucose <= 154 && bmi > 45.3 && age > 29) {
+            pred = 1; ruleDesc = currentLang === 'fa' ? 'قاعده ۱ دیابت: گلوکز ۱۰۰–۱۵۴، BMI > 45.3، سن > 29' : 'Rule 1: Glucose 100–154, BMI > 45.3, Age > 29';
+        } else if (glucose > 154 && bmi > 29) {
+            pred = 1; ruleDesc = currentLang === 'fa' ? 'قاعده ۲ دیابت: گلوکز > 154 و BMI > 29' : 'Rule 2: Glucose > 154 and BMI > 29';
+        } else if (glucose > 154 && bp <= 76 && age <= 60) {
+            pred = 1; ruleDesc = currentLang === 'fa' ? 'قاعده ۳ دیابت: گلوکز > 154، فشار ≤ 76، سن ≤ 60' : 'Rule 3: Glucose > 154, BP ≤ 76, Age ≤ 60';
+        } else if (glucose > 100 && bmi > 26.7 && dpf > 0.439 && age > 29) {
+            pred = 1; ruleDesc = currentLang === 'fa' ? 'قاعده ۴ دیابت: گلوکز > 100، BMI > 26.7، DPF > 0.439، سن > 29' : 'Rule 4: Glucose > 100, BMI > 26.7, DPF > 0.439, Age > 29';
+        } else if (bp <= 30 && bmi > 26.7 && age <= 29) {
+            pred = 1; ruleDesc = currentLang === 'fa' ? 'قاعده ۵ دیابت: فشار ≤ 30، BMI > 26.7، سن ≤ 29' : 'Rule 5: BP ≤ 30, BMI > 26.7, Age ≤ 29';
+        } else if (bp <= 44 && bmi > 26.7) {
+            pred = 1; ruleDesc = currentLang === 'fa' ? 'قاعده ۶ دیابت: فشار ≤ 44 و BMI > 26.7' : 'Rule 6: BP ≤ 44 and BMI > 26.7';
+        } 
+        else if (glucose <= 154 && bmi <= 26.7) {
+            pred = 0; ruleDesc = currentLang === 'fa' ? 'قاعده ۱ سلامت: گلوکز ≤ 154 و BMI ≤ 26.7' : 'Rule 1: Glucose ≤ 154 and BMI ≤ 26.7';
+        } else if (glucose <= 100) {
+            pred = 0; ruleDesc = currentLang === 'fa' ? 'قاعده ۲ سلامت: گلوکز ≤ 100' : 'Rule 2: Glucose ≤ 100';
+        } else if (glucose <= 154 && bp > 30 && age <= 29) {
+            pred = 0; ruleDesc = currentLang === 'fa' ? 'قاعده ۳ سلامت: گلوکز ≤ 154، فشار > 30، سن ≤ 29' : 'Rule 3: Glucose ≤ 154, BP > 30, Age ≤ 29';
+        } else if (bmi <= 29 && age > 60) {
+            pred = 0; ruleDesc = currentLang === 'fa' ? 'قاعده ۴ سلامت: BMI ≤ 29 و سن > 60' : 'Rule 4: BMI ≤ 29 and Age > 60';
+        } else if (glucose <= 154 && bmi <= 45.3 && dpf <= 0.439) {
+            pred = 0; ruleDesc = currentLang === 'fa' ? 'قاعده ۵ سلامت: گلوکز ≤ 154، BMI ≤ 45.3، DPF ≤ 0.439' : 'Rule 5: Glucose ≤ 154, BMI ≤ 45.3, DPF ≤ 0.439';
+        }
+
+        const box = document.getElementById('resultBox');
+        box.className = `result-box result-${pred}`;
+        box.style.display = 'block';
+
+        const t = translations[currentLang];
+        const basedOnText = currentLang === 'fa' ? 'طبق' : 'Based on';
+        // ✅ حالا ruleDesc همیشه مقدار داره — undefined نمیشه
+        box.innerHTML = pred === 1 ?
+            `<span style="font-size:2.1rem">⚠️ ${t.resultYes}</span><br>
+             <small>${basedOnText}: ${ruleDesc}</small>
+             <div class="rule-info">
+                ${t.resultInfoYes}
+             </div>` :
+            `<span style="font-size:2.1rem">✅ ${t.resultNo}</span><br>
+             <small>${basedOnText}: ${ruleDesc}</small>
+             <div class="rule-info">
+                ${t.resultInfoNo}
+             </div>`;
+
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+</script>
+</body>
+</html>
