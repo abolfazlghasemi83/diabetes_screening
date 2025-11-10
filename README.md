@@ -15,7 +15,21 @@ Built with pure HTML, CSS, and vanilla JavaScript — works offline after load.
 
 ### ✨ User Experience & Accessibility (UX)
 
-Dark/Light Theme Toggle: Added full-page support for Dark Mode, including a persistent theme setting stored in localStorage.Full Multi-Language Support (FA/EN): Added an English translation for all static and dynamic text elements, along with a language toggle button. Language preference is persistent using localStorage.RTL/LTR Layout Switch: The page direction (dir) is automatically switched between Right-to-Left (Persian) and Left-to-Right (English) for optimal readability.Persistent Form Data: Input values are saved to localStorage per language, so users can switch languages or refresh the page without losing their entered data.Dynamic Result Display: The risk probability is categorized into Low (< 20%), Medium (20-50%), and High ($\ge$ 50%) with clear visual cues (colors) and personalized advice.
+Dark/Light Theme Toggle: Added full-page support for Dark Mode, including a persistent theme setting stored in localStorage.
+
+Full Multi-Language Support (FA/EN): Added an English translation for all static and dynamic text elements, along with a language toggle button. Language preference is persistent using localStorage.
+
+RTL/LTR Layout Switch: The page direction (dir) is automatically switched between Right-to-Left (Persian) and Left-to-Right (English) for optimal readability.
+
+Persistent Form Data: Input values are saved to localStorage per language, so users can switch languages or refresh the page without losing their entered data.
+
+Dynamic Result Display: The risk probability is categorized into Low (< 20%), Medium (20-50%), and High ($\ge$ 50%) with clear visual cues (colors) and personalized advice.
+
+### 🛠️ Technical Refinements
+
+BMI Calculation: Integrated client-side Body Mass Index (BMI) calculation (Weight / (Height in meters)²) directly into the prediction logic, requiring separate inputs for Weight (kg) and Height (cm)
+
+Enhanced Input Validation: Added checks for empty or non-numeric fields and ensured that height is not zero or negative before calculating BMI.
 
 ---
 
