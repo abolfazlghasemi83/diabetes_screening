@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دکترِ رُباتیک — غربالگری هوشمند دیابت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient-light: linear-gradient(135deg, #f0f4ff 0%, #f9fafc 100%);
+            --bg-gradient-dark: linear-gradient(135deg, #070e1a 0%, #0f172a 100%);
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --danger: #e53e3e;
+            --warning: #f59e0b; 
+            --success: #38a169;
+            --border: #e2e8f0;
+            --shadow: 0 6px 16px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        
+        [data-theme="dark"] {
+            --card-bg: #1e293b;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --shadow: 0 6px 16px rgba(0,0,0,0.2);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.3);
+            --bg-gradient-light: var(--bg-gradient-dark);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-gradient-light);
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            padding: 20px;
+            transition: background 0.6s ease, color 0.4s ease;
+            line-height: 1.6;
+        }
+        
+        .logo-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--primary), #7209b7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+        }
+
+        .info-note {
+            background: rgba(74, 107, 255, 0.06);
+            border-right: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            margin-bottom: 26px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        [data-theme="dark"] .info-note {
+            background: rgba(94, 96, 206, 0.12);
+        }
+        
+        html[dir="ltr"] .info-note {
+            border-right: none;
+            border-left: 4px solid var(--primary);
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            width: 50%;
+        }
+
+        label {
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.02rem;
+            color: var(--text);
+        }
+        
+
+        .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-light);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: help;
+        }
+        
+        [data-theme="dark"] .tooltip-icon {
+            background: var(--text-light);
+            color: var(--card-bg);
+        }
+
+
+        input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1.05rem;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+    
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: -0.5px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text-light);
+            width: 40%;
+            font-size: 1.1rem;
+            box-shadow: none;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d9e6;
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+        
+        [data-theme="dark"] .btn-secondary {
+            background: var(--border);
+            color: var(--text-light);
+        }
+        
+        [data-theme="dark"] .btn-secondary:hover {
+            background: #475569;
+            color: var(--text);
+        }
+
+
+        .result-box {
+            padding: 28px;
+            border-radius: 18px;
+            text-align: center;
+            font-size: 1.1rem; 
+            font-weight: 500; 
+            display: none;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            line-height: 1.7;
+        }
+        
+        
+        .result-box .percentage {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .result-box .result-info {
+            margin-top: 16px;
+            font-size: 0.95rem;
+            font-weight: 400;
+            padding-top: 16px;
+            border-top: 1px dashed;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        
+        .result-low {
+            background: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .result-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .result-high {
+            background: rgba(229, 62, 62, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .result-0 { background: rgba(56, 161, 105, 0.1); color: var(--success); border-color: var(--success); }
+        .result-1 { background: rgba(229, 62, 62, 0.1); color: var(--danger); border-color: var(--danger); }
+
+        .theme-toggle, .lang-toggle {
+            position: fixed;
+            top: 24px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            transform: rotate(20deg);
+        }
+
+        .theme-toggle {
+            left: 24px;
+        }
+
+        .lang-toggle {
+            right: 24px;
+        }
+
+        html[dir="ltr"] .theme-toggle {
+            left: auto;
+            right: 88px;
+        }
+        
+        html[dir="ltr"] .lang-toggle {
+            right: auto;
+            left: 24px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        
+        @media (max-width: 600px) {
+            .card { padding: 22px 20px; }
+            .logo-header h1 { font-size: 2.0rem; }
+            .btn { padding: 16px; font-size: 1.1rem; }
+            .theme-toggle, .lang-toggle { width: 48px; height: 48px; font-size: 1.2rem; }
+            .form-row { flex-direction: column; gap: 0; } 
+            .form-row .form-group { width: 100%; } 
+            .button-group { flex-direction: column; }
+            .btn-secondary { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle" aria-label="تغییر حالت شب و روز">
+        <span id="themeIcon">🌙</span>
+    </div>
+
+    <div class="lang-toggle" id="langToggle" aria-label="تغییر زبان / Switch language">
+        🇬🇧 English
+    </div>
+
+    <div class="container">
+        <header class="logo-header">
+            <h1 id="title">دکترِ رُباتیک 🤖🩺</h1>
+            <p class="subtitle" id="subtitle">غربالگری هوشمند دیابت — مبتنی بر مدل هوش مصنوعی</p>
+        </header>
+
+        <div class="info-note" id="infoNote">
+            ℹ️ این ابزار یک <strong>غربالگری اولیه</strong> است — نه تشخیص پزشکی.  
+            نتایج، کمکی برای تصمیم‌گیری دربارهٔ مراجعه به متخصص هستند.
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <label for="glucose" id="glucoseLabel">گلوکز (Glucose)</label>
+                <input type="number" id="glucose" placeholder="مثال: 120" min="0" step="0.1">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="weight" id="weightLabel">وزن (کیلوگرم)</label>
+                    <input type="number" id="weight" placeholder="مثال: 75" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="height" id="heightLabel">قد (سانتی‌متر)</label>
+                    <input type="number" id="height" placeholder="مثال: 170" min="0" step="0.1">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="bp" id="bpLabel">فشار خون
+                    <span class="tooltip-icon" id="bpTooltip" title="عدد دیاستولیک یا پایین‌تر در اندازه‌گیری فشار خون (مثال: اگر ۱۲۰/۸۰ باشد، عدد ۸۰ را وارد کنید).">?</span>
+                </label>
+                <input type="number" id="bp" placeholder="مثال: 72" min="0" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="age" id="ageLabel">سن (Age)</label>
+                <input type="number" id="age" placeholder="مثال: 45" min="0" max="120">
+            </div>
+            <div class="form-group">
+                <label for="dpf" id="dpfLabel">سابقه خانوادگی
+                    <span class="tooltip-icon" id="dpfTooltip" title="عددی بین 0.08 تا 2.4 که نشان‌دهنده سابقه ژنتیکی دیابت در خانواده شماست.">?</span>
+                </label>
+                <input type="number" id="dpf" placeholder="مثال: 0.5" min="0" step="0.001">
+            </div>
+
+            <div class="button-group">
+                <button class="btn" id="predictBtn">🔍 غربالگری دیابت!</button>
+                <button class="btn btn-secondary" id="clearBtn">پاک کردن</button>
+            </div>
+        </div>
+
+        <div id="resultBox" class="result-box"></div>
+    </div>
+
+    <footer id="footer">
+        طراحی شده با ❤️ توسط <strong>ابوالفضل قاسمی</strong> — مبتنی بر مدل یادگیری ماشین
+    </footer>
+
+    <script>
+    
+    const translations = {
+        fa: {
+            title: "دکترِ رُباتیک 🤖🩺",
+            subtitle: "غربالگری هوشمند دیابت — مبتنی بر مدل هوش مصنوعی",
+            infoNote: "ℹ️ این ابزار یک <strong>غربالگری اولیه</strong> است — نه تشخیص پزشکی.<br>نتایج، کمکی برای تصمیم‌گیری دربارهٔ مراجعه به متخصص هستند.",
+            glucoseLabel: "گلوکز (Glucose)",
+            weightLabel: "وزن (کیلوگرم)",
+            heightLabel: "قد (سانتی‌متر)",
+            bpLabel: "فشار خون",
+            bpTooltip: "عدد دیاستولیک یا پایین‌تر در اندازه‌گیری فشار خون (مثال: اگر ۱۲۰/۸۰ باشد، عدد ۸۰ را وارد کنید).",
+            ageLabel: "سن (Age)",
+            dpfLabel: "سابقه خانوادگی",
+            dpfTooltip: "عددی بین 0.08 تا 2.4 که نشان‌دهنده سابقه ژنتیکی دیابت در خانواده شماست.",
+            predictBtn: "🔍 غربالگری دیابت!",
+            clearBtn: "پاک کردن",
+            alertInvalid: "⚠️ لطفاً تمامی فیلدها را به‌صورت عددی معتبر وارد کنید.",
+            alertInvalidHeight: "⚠️ قد نمی‌تواند صفر یا منفی باشد.",
+            langToggleText: "🇬🇧 English",
+            placeholders: {
+                glucose: "مثال: 120",
+                weight: "مثال: 75",
+                height: "مثال: 170",
+                bp: "مثال: 72",
+                age: "مثال: 45",
+                dpf: "مثال: 0.5"
+            },
+            resultTitle: "احتمال خطر دیابت:",
+            resultInfoLow: "وضعیت شما مطلوب به نظر می‌رسد. با این حال، سلامتی نیاز به پیشگیری دارد — چکاپ سالانه را فراموش نکنید.",
+            resultInfoMedium: "نتیجه شما نیاز به توجه دارد. توصیه می‌شود سبک زندگی سالم‌تری (تغذیه و ورزش) در پیش بگیرید و برای بررسی دقیق‌تر با پزشک مشورت کنید.",
+            resultInfoHigh: "خطر بالا است. این نتیجه جایگزین نظر پزشک نیست. لطفاً برای بررسی دقیق و شروع اقدامات لازم، (حتماً) در اسرع وقت به متخصص غدد مراجعه کنید.",
+            footer: "طراحی شده با ❤️ توسط <strong>ابوالفضل قاسمی</strong> — مبتنی بر مدل یادگیری ماشین",
+        },
+        en: {
+            title: "Dr. Robotic 🤖🩺",
+            subtitle: "Smart Diabetes Screening — Based on AI Model",
+            infoNote: "ℹ️ This tool provides <strong>preliminary screening</strong> — not medical diagnosis.<br>Results help you decide whether to consult a specialist.",
+            glucoseLabel: "Glucose",
+            weightLabel: "Weight (kg)",
+            heightLabel: "Height (cm)",
+            bpLabel: "Blood Pressure",
+            bpTooltip: "The diastolic or lower number in a blood pressure reading (e.g., if your reading is 120/80, enter 80).",
+            ageLabel: "Age",
+            dpfLabel: "Diabetes Pedigree",
+            dpfTooltip: "A number (0.08 to 2.4) representing diabetes genetic history in your family.",
+            predictBtn: "🔍 Screen for Diabetes!",
+            clearBtn: "Clear Form",
+            alertInvalid: "⚠️ Please fill all fields with valid numbers.",
+            alertInvalidHeight: "⚠️ Height cannot be zero or negative.",
+            langToggleText: "🇮🇷 فارسی",
+            placeholders: {
+                glucose: "e.g. 120",
+                weight: "e.g. 75",
+                height: "e.g. 170",
+                bp: "e.g. 72",
+                age: "e.g. 45",
+                dpf: "e.g. 0.5"
+            },
+            resultTitle: "Diabetes Risk Probability:",
+            resultInfoLow: "Your status appears favorable. However, health requires prevention — don't skip your annual check-up.",
+            resultInfoMedium: "Your result warrants attention. It's recommended to adopt a healthier lifestyle (diet and exercise) and consult a doctor for a detailed check-up.",
+            resultInfoHigh: "High risk detected. This result is NOT a substitute for professional medical advice. Please consult an endocrinologist **as soon as possible** for accurate diagnosis and treatment.",
+            footer: "Made with ❤️ by <strong>Abolfazl Ghasemi</strong> — Based on Machine Learning Model",
+        }
+    };
+    
+    
+    const inputIds = ['glucose', 'weight', 'height', 'bp', 'age', 'dpf'];
+    
+    function initTheme() {
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+        
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            } else {
+                html.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+            }
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+        }
+
+        setTheme(currentTheme);
+        themeToggle.addEventListener('click', () => {
+            setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        });
+    }
+
+    
+    // اضافه شدن پارامتر shouldAlert
+    function getFormValues(currentLang, shouldAlert = true) {
+        const glucose = document.getElementById('glucose').value.trim();
+        const weight = document.getElementById('weight').value.trim();
+        const height = document.getElementById('height').value.trim();
+        const bp = document.getElementById('bp').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const dpf = document.getElementById('dpf').value.trim();
+
+        // بررسی خالی بودن و معتبر بودن اعداد
+        if ([glucose, weight, height, bp, age, dpf].some(v => v === '' || isNaN(parseFloat(v)))) {
+            if (shouldAlert) {
+                alert(translations[currentLang].alertInvalid);
+            }
+            return null; // بازگشت null در صورت خطای ولیدیشن
+        }
+        
+        const parsedHeight = parseFloat(height);
+        if (parsedHeight <= 0) {
+            if (shouldAlert) {
+                alert(translations[currentLang].alertInvalidHeight);
+            }
+            return null;
+        }
+        
+        const parsedWeight = parseFloat(weight);
+        const heightInMeters = parsedHeight / 100;
+        const bmi = parsedWeight / (heightInMeters * heightInMeters);
+
+        
+        // ذخیره مقادیر موفق در Local Storage
+        inputIds.forEach(id => {
+            localStorage.setItem(`input_${id}_${currentLang}`, document.getElementById(id).value.trim());
+        });
+
+        return { 
+            glucose: parseFloat(glucose), 
+            bmi, 
+            bp: parseFloat(bp), 
+            age: parseFloat(age), 
+            dpf: parseFloat(dpf) 
+        };
+    }
+
+
+    function setLanguage(lang) {
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        const newLang = lang || currentLang;
+        
+        localStorage.setItem('lang', newLang);
+        const t = translations[newLang];
+
+        // ... (بقیه به‌روزرسانی‌های متن ثابت) ...
+        document.getElementById('title').innerHTML = t.title;
+        document.getElementById('subtitle').textContent = t.subtitle;
+        document.getElementById('infoNote').innerHTML = t.infoNote;
+        document.getElementById('glucoseLabel').textContent = t.glucoseLabel;
+        document.getElementById('weightLabel').textContent = t.weightLabel;
+        document.getElementById('heightLabel').textContent = t.heightLabel;
+        document.getElementById('ageLabel').textContent = t.ageLabel;
+        
+        const bpTooltip = document.getElementById('bpTooltip');
+        const dpfTooltip = document.getElementById('dpfTooltip');
+        document.getElementById('bpLabel').innerHTML = t.bpLabel + " " + bpTooltip.outerHTML;
+        document.getElementById('dpfLabel').innerHTML = t.dpfLabel + " " + dpfTooltip.outerHTML;
+        document.getElementById('bpTooltip').title = t.bpTooltip;
+        document.getElementById('dpfTooltip').title = t.dpfTooltip;
+
+        document.getElementById('predictBtn').textContent = t.predictBtn;
+        document.getElementById('clearBtn').textContent = t.clearBtn;
+        document.getElementById('footer').innerHTML = t.footer;
+        document.getElementById('langToggle').innerHTML = t.langToggleText;
+        
+        let isResultVisible = document.getElementById('resultBox').style.display === 'block';
+        let isFormEmpty = true;
+
+        // به‌روزرسانی Placeholderها و بازیابی مقادیر
+        inputIds.forEach(id => {
+            const input = document.getElementById(id);
+            input.placeholder = t.placeholders[id];
+            
+            // اگر lang تعریف شده باشد، یعنی تغییر زبان دستی است (ذخیره مقادیر فعلی برای زبان قبلی)
+            if (lang && lang !== currentLang) {
+                const prevLang = currentLang; 
+                const val = document.getElementById(id).value.trim();
+                if (val) localStorage.setItem(`input_${id}_${prevLang}`, val);
+                else localStorage.removeItem(`input_${id}_${prevLang}`); // مقادیر خالی را حذف کن
+            }
+            
+            // بارگذاری مقادیر برای زبان جدید
+            const val = localStorage.getItem(`input_${id}_${newLang}`);
+            if (val) {
+                input.value = val;
+                isFormEmpty = false; // حداقل یک فیلد مقدار دارد
+            }
+            else input.value = '';
+        });
+
+        
+        document.documentElement.dir = newLang === 'fa' ? 'rtl' : 'ltr';
+        document.documentElement.lang = newLang;
+
+        
+        const resultBox = document.getElementById('resultBox');
+        // اگر نتیجه‌ای نمایش داده می‌شد:
+        if (isResultVisible) {
+            // اگر فرم اکنون خالی است، نتیجه را پنهان کن.
+            if (isFormEmpty) {
+                resultBox.style.display = 'none';
+                resultBox.innerHTML = '';
+            } else {
+                // اگر فرم مقداری دارد، فقط برای ترجمه دوباره محاسبه کن.
+                handlePrediction(false); 
+            }
+        }
+    }
+
+
+    function handleLangToggle() {
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        const newLang = currentLang === 'fa' ? 'en' : 'fa';
+        
+        setLanguage(newLang); // فراخوانی setLanguage که اکنون خود عملیات ذخیره را انجام می‌دهد
+    }
+    
+    
+    function validateInputs(inputs, currentLang) {
+        // ... (تابع ولیدیشن بدون تغییر باقی می‌ماند) ...
+        const { glucose, bmi, bp, age, dpf } = inputs;
+        const alerts = [];
+        const t = translations[currentLang];
+        const isFa = currentLang === 'fa';
+
+        if (glucose < 20 || glucose > 600) alerts.push(isFa ? `گلوکز: ${glucose} (غیرمعمول)` : `Glucose: ${glucose} (Unusual)`);
+        if (bmi < 10 || bmi > 90) alerts.push(isFa ? `BMI: ${bmi.toFixed(1)} (غیرمعمول)` : `BMI: ${bmi.toFixed(1)} (Unusual)`);
+        if (bp < 10 || bp > 300) alerts.push(isFa ? `فشار خون: ${bp} (غیرمعمول)` : `Blood Pressure: ${bp} (Unusual)`);
+        if (age < 1 || age > 120) alerts.push(isFa ? `سن: ${age} (غیرمعمول)` : `Age: ${age} (Unusual)`);
+        if (dpf < 0 || dpf > 3) alerts.push(isFa ? `سابقه خانوادگی (DPF): ${dpf} (غیرمعمول)` : `DPF: ${dpf} (Unusual)`);
+
+        if (alerts.length > 0) {
+            const title = isFa ? '⚠️ هشدار بالینی' : '⚠️ Clinical Warning';
+            const confirmMsg = (isFa ? 'مقادیر واردشده خارج از محدودهٔ قابل‌انتظار هستند.\nآیا می‌خواهید با این مقادیر ادامه دهید؟\n\n• ' 
+                                     : 'Some values are outside plausible ranges.\nDo you want to proceed anyway?\n\n• ') 
+                             + alerts.join('\n• ');
+
+            if (!confirm(`${title}\n\n${confirmMsg}`)) {
+                return false; 
+            }
+        }
+        return true; 
+    }
+    
+    function calculateRisk(inputs) {
+        // ... (تابع محاسبه ریسک بدون تغییر باقی می‌ماند) ...
+        const { glucose, bmi, bp, age, dpf } = inputs;
+        const w_glucose = 0.034;
+        const w_bmi = 0.088;
+        const w_bp = -0.003; 
+        const w_age = 0.018;
+        const w_dpf = 0.91;
+        const bias = -8.45; 
+        
+        let z = bias +
+                (glucose * w_glucose) +
+                (bmi * w_bmi) +
+                (bp * w_bp) +
+                (age * w_age) +
+                (dpf * w_dpf);
+
+        
+        let probability = 1 / (1 + Math.exp(-z));
+        
+        return probability;
+    }
+        
+    
+    function displayResult(probability, currentLang) {
+        // ... (تابع نمایش نتیجه بدون تغییر باقی می‌ماند) ...
+        const resultBox = document.getElementById('resultBox');
+        const t = translations[currentLang];
+        const riskPercent = (probability * 100).toFixed(1);
+        
+        let riskClass = 'result-low';
+        let riskInfo = t.resultInfoLow;
+
+        if (probability >= 0.50) { 
+            riskClass = 'result-high';
+            riskInfo = t.resultInfoHigh;
+        } else if (probability >= 0.20) { 
+            riskClass = 'result-medium';
+            riskInfo = t.resultInfoMedium;
+        }
+        
+        
+        resultBox.innerHTML = `
+            ${t.resultTitle}
+            <span class="percentage">${riskPercent}%</span>
+            <div class="result-info">${riskInfo}</div>
+        `;
+        
+        
+        resultBox.className = 'result-box'; 
+        resultBox.classList.add(riskClass);
+        
+        resultBox.style.display = 'block';
+    }
+    
+    
+    function handlePrediction(shouldValidate = true) {
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        
+        // shouldAlert را بر اساس shouldValidate تنظیم می‌کنیم
+        const inputs = getFormValues(currentLang, shouldValidate); 
+        
+        // اگر ولیدیشن ورودی انجام شود و موفق نباشد، inputs برابر null خواهد بود.
+        if (!inputs) return;
+
+        
+        // ولیدیشن محدوده غیرمعمول فقط در حالت کلیک دکمه (shouldValidate=true)
+        if (shouldValidate) {
+            const isValid = validateInputs(inputs, currentLang);
+            if (!isValid) return; 
+        }
+
+        
+        const probability = calculateRisk(inputs);
+        
+        displayResult(probability, currentLang);
+    }
+    
+    
+    function handleClearForm() {
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        inputIds.forEach(id => {
+            document.getElementById(id).value = '';
+            // پاک کردن هر دو کلید زبان
+            localStorage.removeItem(`input_${id}_fa`); 
+            localStorage.removeItem(`input_${id}_en`);
+        });
+        
+        const resultBox = document.getElementById('resultBox');
+        resultBox.style.display = 'none';
+        resultBox.innerHTML = '';
+    }
+    
+    
+    function bindEventListeners() {
+        // **اصلاح: هنگام کلیک بر روی دکمه، shouldValidate باید TRUE باشد.**
+        document.getElementById('predictBtn').addEventListener('click', () => handlePrediction(true));
+        document.getElementById('clearBtn').addEventListener('click', handleClearForm);
+        document.getElementById('langToggle').addEventListener('click', handleLangToggle);
+    }
+    
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        setLanguage(); // بارگذاری اولیه زبان و مقادیر
+        bindEventListeners();
+    });
+
+    </script>
+</body>
+</html>
