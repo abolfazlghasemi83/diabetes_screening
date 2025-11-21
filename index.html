@@ -516,7 +516,6 @@
     }
 
     
-    // اضافه شدن پارامتر shouldAlert
     function getFormValues(currentLang, shouldAlert = true) {
         const glucose = document.getElementById('glucose').value.trim();
         const weight = document.getElementById('weight').value.trim();
@@ -525,12 +524,12 @@
         const age = document.getElementById('age').value.trim();
         const dpf = document.getElementById('dpf').value.trim();
 
-        // بررسی خالی بودن و معتبر بودن اعداد
+      
         if ([glucose, weight, height, bp, age, dpf].some(v => v === '' || isNaN(parseFloat(v)))) {
             if (shouldAlert) {
                 alert(translations[currentLang].alertInvalid);
             }
-            return null; // بازگشت null در صورت خطای ولیدیشن
+            return null; 
         }
         
         const parsedHeight = parseFloat(height);
@@ -546,7 +545,7 @@
         const bmi = parsedWeight / (heightInMeters * heightInMeters);
 
         
-        // ذخیره مقادیر موفق در Local Storage
+        
         inputIds.forEach(id => {
             localStorage.setItem(`input_${id}_${currentLang}`, document.getElementById(id).value.trim());
         });
@@ -568,7 +567,7 @@
         localStorage.setItem('lang', newLang);
         const t = translations[newLang];
 
-        // ... (بقیه به‌روزرسانی‌های متن ثابت) ...
+       
         document.getElementById('title').innerHTML = t.title;
         document.getElementById('subtitle').textContent = t.subtitle;
         document.getElementById('infoNote').innerHTML = t.infoNote;
@@ -592,24 +591,24 @@
         let isResultVisible = document.getElementById('resultBox').style.display === 'block';
         let isFormEmpty = true;
 
-        // به‌روزرسانی Placeholderها و بازیابی مقادیر
+     
         inputIds.forEach(id => {
             const input = document.getElementById(id);
             input.placeholder = t.placeholders[id];
             
-            // اگر lang تعریف شده باشد، یعنی تغییر زبان دستی است (ذخیره مقادیر فعلی برای زبان قبلی)
+            
             if (lang && lang !== currentLang) {
                 const prevLang = currentLang; 
                 const val = document.getElementById(id).value.trim();
                 if (val) localStorage.setItem(`input_${id}_${prevLang}`, val);
-                else localStorage.removeItem(`input_${id}_${prevLang}`); // مقادیر خالی را حذف کن
+                else localStorage.removeItem(`input_${id}_${prevLang}`); 
             }
             
-            // بارگذاری مقادیر برای زبان جدید
+            
             const val = localStorage.getItem(`input_${id}_${newLang}`);
             if (val) {
                 input.value = val;
-                isFormEmpty = false; // حداقل یک فیلد مقدار دارد
+                isFormEmpty = false; 
             }
             else input.value = '';
         });
@@ -620,14 +619,14 @@
 
         
         const resultBox = document.getElementById('resultBox');
-        // اگر نتیجه‌ای نمایش داده می‌شد:
+        
         if (isResultVisible) {
-            // اگر فرم اکنون خالی است، نتیجه را پنهان کن.
+            
             if (isFormEmpty) {
                 resultBox.style.display = 'none';
                 resultBox.innerHTML = '';
             } else {
-                // اگر فرم مقداری دارد، فقط برای ترجمه دوباره محاسبه کن.
+                
                 handlePrediction(false); 
             }
         }
@@ -638,12 +637,12 @@
         const currentLang = localStorage.getItem('lang') || 'fa';
         const newLang = currentLang === 'fa' ? 'en' : 'fa';
         
-        setLanguage(newLang); // فراخوانی setLanguage که اکنون خود عملیات ذخیره را انجام می‌دهد
+        setLanguage(newLang); 
     }
     
     
     function validateInputs(inputs, currentLang) {
-        // ... (تابع ولیدیشن بدون تغییر باقی می‌ماند) ...
+       
         const { glucose, bmi, bp, age, dpf } = inputs;
         const alerts = [];
         const t = translations[currentLang];
@@ -669,7 +668,7 @@
     }
     
     function calculateRisk(inputs) {
-        // ... (تابع محاسبه ریسک بدون تغییر باقی می‌ماند) ...
+      
         const { glucose, bmi, bp, age, dpf } = inputs;
         const w_glucose = 0.034;
         const w_bmi = 0.088;
@@ -693,7 +692,7 @@
         
     
     function displayResult(probability, currentLang) {
-        // ... (تابع نمایش نتیجه بدون تغییر باقی می‌ماند) ...
+       
         const resultBox = document.getElementById('resultBox');
         const t = translations[currentLang];
         const riskPercent = (probability * 100).toFixed(1);
@@ -727,14 +726,14 @@
     function handlePrediction(shouldValidate = true) {
         const currentLang = localStorage.getItem('lang') || 'fa';
         
-        // shouldAlert را بر اساس shouldValidate تنظیم می‌کنیم
+        
         const inputs = getFormValues(currentLang, shouldValidate); 
         
-        // اگر ولیدیشن ورودی انجام شود و موفق نباشد، inputs برابر null خواهد بود.
+       
         if (!inputs) return;
 
         
-        // ولیدیشن محدوده غیرمعمول فقط در حالت کلیک دکمه (shouldValidate=true)
+      
         if (shouldValidate) {
             const isValid = validateInputs(inputs, currentLang);
             if (!isValid) return; 
@@ -751,7 +750,7 @@
         const currentLang = localStorage.getItem('lang') || 'fa';
         inputIds.forEach(id => {
             document.getElementById(id).value = '';
-            // پاک کردن هر دو کلید زبان
+            
             localStorage.removeItem(`input_${id}_fa`); 
             localStorage.removeItem(`input_${id}_en`);
         });
@@ -763,7 +762,7 @@
     
     
     function bindEventListeners() {
-        // **اصلاح: هنگام کلیک بر روی دکمه، shouldValidate باید TRUE باشد.**
+      
         document.getElementById('predictBtn').addEventListener('click', () => handlePrediction(true));
         document.getElementById('clearBtn').addEventListener('click', handleClearForm);
         document.getElementById('langToggle').addEventListener('click', handleLangToggle);
@@ -773,7 +772,7 @@
     
     document.addEventListener('DOMContentLoaded', () => {
         initTheme();
-        setLanguage(); // بارگذاری اولیه زبان و مقادیر
+        setLanguage(); 
         bindEventListeners();
     });
 
@@ -781,3 +780,4 @@
 </body>
 
 </html>
+
